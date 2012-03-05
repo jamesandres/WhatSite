@@ -94,7 +94,20 @@ WhatSite.prototype.affect = function(realm) {
 
 // Applies a coloured bar to the favicon
 WhatSite.prototype.affectFavicon = function(color) {
-  var icon = $('link[rel="shortcut icon"]:first')[0];
+  var linkTags = document.getElementsByTagName('link');
+  var icon = null;
+
+  for (var i in linkTags) {
+    if (typeof linkTags[i] !== 'object') continue;
+    var rel = linkTags[i].getAttribute('rel');
+    if (typeof rel === 'undefined') continue;
+
+    if (rel === 'shortcut icon') {
+      icon = linkTags[i];
+      break;
+    }
+  }
+
   var iconImg = new Image();
   var flatColor = this.splitColor(color).join(',');
 
@@ -123,8 +136,12 @@ WhatSite.prototype.affectFavicon = function(color) {
     ctx.stroke();
 
     // See: http://www.p01.org/releases/DEFENDER_of_the_favicon/
-    (newIcon = icon.cloneNode(true)).setAttribute('href', ctx.canvas.toDataURL());
-    icon.parentNode.replaceChild(newIcon, icon);
+    try {
+      (newIcon = icon.cloneNode(true)).setAttribute('href', ctx.canvas.toDataURL());
+      icon.parentNode.replaceChild(newIcon, icon);
+    } catch (e) {
+      // Nobody cares if a favicon goes untweaked
+    }
   };
   iconImg.src = icon.href;
 };
@@ -133,13 +150,13 @@ WhatSite.prototype.affectFavicon = function(color) {
 // Applies coloured bar to the body element
 WhatSite.prototype.affectBody = function(color) {
   var stripe = document.createElement('div');
-  stripe.className = 'whatsite-stripe';
-  stripe.style['background-color'] = color;
-  stripe.style['z-index'] = 1000; // Ensure it is higher than 999 for Drupal's admin_menu
-  stripe.style['clear'] = 'both';
+  stripe.style['backgroundColor'] = color;
+  stripe.style['zIndex'] = 1000; // Ensure it is higher than 999 for Drupal's admin_menu
   stripe.style['position'] = 'absolute';
-  stripe.style['top'] = '0';
-  stripe.style['left'] = '0';
+  stripe.style['top'] = '0px';
+  stripe.style['left'] = '0px';
+  stripe.style['width'] = '100%';
+  stripe.style['height'] = '3px';
   var body = document.getElementsByTagName('body')[0];
   body.insertBefore(stripe, body.childNodes[0]);
 }
