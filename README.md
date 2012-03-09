@@ -46,11 +46,11 @@ More advanced usage:
       WhatSite
           .init({
               "local": {
-                  "host_match": "\\.local(host)?",
+                  "host": "\\.local(host)?",
                   "color": "#66ccff"
               },
               "dev": {
-                  "host_match": "\\.dev\\.",
+                  "host": "\\.dev\\.",
                   "color": "#66ccff"
               },
           })

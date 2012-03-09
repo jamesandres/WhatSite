@@ -25,11 +25,11 @@ var WhatSite = (function () {
       ],
       "sites": {
         "dev": {
-          "host_match": "\\.dev\\.|\\.local(host)?",
+          "host": "\\.dev\\.|\\.local(host)?",
           "color": "#66ccff" // Sky
         },
         "test": {
-          "host_match": "\\.(test|qa)\\.",
+          "host": "\\.(test|qa)\\.",
           "color": "#ffcc66" // Cantaloupe
         }
       }
@@ -55,14 +55,14 @@ var WhatSite = (function () {
 
   // Should this site be affected?
   WhatSite.prototype.thisSite = function () {
-    var realm, host_match, patt;
+    var realm, host, patt;
 
     for (realm in this.opts.sites) {
       if (this.opts.sites.hasOwnProperty(realm)) {
-        host_match = this.opts.sites[realm].host_match;
+        host = this.opts.sites[realm].host;
 
-        if (typeof host_match !== "undefined") {
-          patt = new RegExp(host_match);
+        if (typeof host !== "undefined") {
+          patt = new RegExp(host);
 
           if (window.location.hostname.match(patt) !== -1) {
             return realm;
