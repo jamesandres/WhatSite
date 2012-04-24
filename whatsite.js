@@ -24,18 +24,23 @@ var WhatSite = (function () {
         "body"
       ],
       "sites": {
+        "local": {
+          "host": "local(host)?$",
+          "color": "#ff6fcf" // Pink
+        },
         "dev": {
-          "host": "\\.dev\\.|\\.local(host)?",
+          "host": "(^|\\.)dev\\.",
           "color": "#66ccff" // Sky
         },
         "test": {
-          "host": "\\.(test|qa)\\.",
+          "host": "(^|\\.)(test|qa)\\.",
           "color": "#ffcc66" // Cantaloupe
         }
       }
     };
 
     this.opts = this.extend(this.defaults, userOpts);
+    this.hostname = window.location.hostname;
 
     return this;
   };
@@ -55,7 +60,7 @@ var WhatSite = (function () {
 
   // Should this site be affected?
   WhatSite.prototype.thisSite = function () {
-    var realm, host, patt;
+    var realm, host, patt, result;
 
     for (realm in this.opts.sites) {
       if (this.opts.sites.hasOwnProperty(realm)) {
@@ -63,8 +68,9 @@ var WhatSite = (function () {
 
         if (typeof host !== "undefined") {
           patt = new RegExp(host);
+          result = this.hostname.match(patt);
 
-          if (window.location.hostname.match(patt) !== -1) {
+          if (result !== -1 && result != null) {
             return realm;
           }
         }
@@ -116,7 +122,7 @@ var WhatSite = (function () {
         continue;
       }
 
-      if (rel === "shortcut icon") {
+      if (rel === "shortcut icon" || rel === "icon") {
         icon = linkTags[i];
         break;
       }
