@@ -33,7 +33,7 @@ var WhatSite = (function () {
           "color": "#66ccff" // Sky
         },
         "test": {
-          "host": "(^|\\.)(test|qa)\\.",
+          "host": "(^|\\.)(test|testing|qa)\\.",
           "color": "#ffcc66" // Cantaloupe
         }
       }

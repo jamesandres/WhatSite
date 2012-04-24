@@ -23,6 +23,9 @@ var testHosts = {
     "test.site.com",
     "test.sub.site.com",
     "site.test.com",
+    "testing.site.com",
+    "testing.sub.site.com",
+    "site.testing.com",
     "qa.site.com",
     "qa.sub.site.com",
     "site.qa.com"
